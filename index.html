@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App 🌤️</title>
+  
+  <!-- Modern CSS -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(to right, #74ebd5, #ACB6E5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      max-width: 450px;
+      width: 90%;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .container:hover {
+      transform: translateY(-5px);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+      font-weight: 700;
+    }
+
+    .search-form {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .search-form input {
+      flex: 1;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .search-form input:focus {
+      border-color: #007BFF;
+      box-shadow: 0 0 8px rgba(0,123,255,0.3);
+    }
+
+    .search-form button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 12px;
+      background: #007BFF;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .search-form button:hover {
+      background: #0056b3;
+    }
+
+    .card {
+      background: #fefefe;
+      padding: 20px;
+      border-radius: 15px;
+      margin-top: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    .card img {
+      width: 80px;
+      margin-bottom: 10px;
+    }
+
+    .big {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .info {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 10px;
+      color: #555;
+      font-weight: 500;
+    }
+
+    .error {
+      color: #ff4d4d;
+      font-weight: bold;
+      padding: 10px;
+    }
+
+    footer {
+      margin-top: 15px;
+      font-size: 0.8rem;
+      color: #555;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media(max-width: 500px) {
+      .info { flex-direction: column; gap: 5px; }
+      .search-form { flex-direction: column; }
+      .search-form button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>Weather Checker 🌤️</h1>
+
+    <form method="POST" class="search-form">
+      <input type="text" name="city" placeholder="Enter city (e.g., London)" required>
+      <button type="submit">Get Weather</button>
+    </form>
+
+    {% if error %}
+      <div class="card error">{{ error | capitalize }}</div>
+    {% endif %}
+
+    {% if weather %}
+      <div class="card result">
+        <h2>{{ weather.city }}</h2>
+        <img src="{{ weather.icon }}" alt="weather icon">
+        <p class="big">{{ weather.temp }}°C — {{ weather.description }}</p>
+        <div class="info">
+          <span>Feels like: {{ weather.feels_like }}°C</span>
+          <span>Humidity: {{ weather.humidity }}%</span>
+          <span>Pressure: {{ weather.pressure }} hPa</span>
+          <span>Wind: {{ weather.wind_speed }} m/s</span>
+        </div>
+      </div>
+    {% endif %}
+
+    <footer>
+      <small>Powered by OpenWeatherMap</small>
+    </footer>
+  </main>
+</body>
+</html>
